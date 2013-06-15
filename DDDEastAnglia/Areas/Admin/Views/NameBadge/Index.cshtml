@@ -1,0 +1,96 @@
+﻿@model IList<DDDEastAnglia.Areas.Admin.Models.NameBadge>
+
+@{
+    Layout = null;
+}
+
+<html>
+    <head>
+        <style>
+            body {
+                font-family: calibri;
+            }
+
+            img {
+                border: 1px solid black;
+            }
+
+            table.badge {
+                display: inline-block;
+                border: 1px solid #ccc;
+                width: 400px;
+                height: 100px;
+                margin-right: 20px;
+                margin-bottom: 20px;
+            }
+
+            .avatar {
+                width: 75px;
+                height: 75px;
+            }
+
+            .avatar img {
+                max-width: 75px;
+                max-height: 75px;
+            }
+
+            .name, .twitterhandle {
+                font-weight: bold;
+                text-align: center;
+            }
+
+            .name {
+                font-size: 38px;
+                text-transform: capitalize;
+            }
+
+            .twitterhandle {
+                color: cornflowerblue;
+                font-size: 24px;
+            }
+
+            .ticketid {
+                text-align: right;
+                vertical-align: bottom;
+                font-size: 8px;
+                color: #9c9c9c;
+            }
+        </style>
+    </head>
+    
+    <body>
+        @foreach (var badge in Model)
+        {
+            <table class="badge">
+                <tr>
+                    @if (badge.HasTwitterInfo)
+                    {
+                        <td rowspan="3" class="avatar">
+                            <img src="https://api.twitter.com/1.1/users/profile_image?screen_name=@badge.TwitterHandle&size=bigger"/>
+                        </td>
+                    }
+
+                    <td class="name">@badge.FullName</td>
+                </tr>
+        
+                @if (badge.HasTwitterInfo)
+                {
+                    <tr>
+                        <td class="twitterhandle">@@@badge.TwitterHandle</td>
+                    </tr>
+                }
+                
+                <tr>
+                    <td class="ticketid">
+                        @badge.TicketId
+                        
+                        @if (badge.FirstTimer)
+                        {
+                            <text>Y</text>
+                        }
+                    </td>
+                </tr>
+            </table>
+        }
+    </body>
+</html>

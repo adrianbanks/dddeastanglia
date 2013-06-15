@@ -218,6 +218,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Admin\Controllers\NameBadgeController.cs" />
+    <Compile Include="Areas\Admin\Models\Eventbrite\EventbriteModels.cs" />
+    <Compile Include="Areas\Admin\Models\Eventbrite\EventbriteUrl.cs" />
+    <Compile Include="Areas\Admin\Models\NameBadge.cs" />
     <Compile Include="Areas\Admin\Models\VotersPerIPAddressViewModel.cs" />
     <Compile Include="Areas\Admin\Models\VotesPerDayViewModel.cs" />
     <Compile Include="Helpers\Sessions\AllSessionsLoader.cs" />
@@ -566,6 +570,7 @@
     <Content Include="Content\font\FontAwesome.otf" />
     <Content Include="Areas\Admin\Views\Voting\DuplicateVotes.cshtml" />
     <Content Include="Areas\Admin\Views\Voting\NumberOfUsersWhoHaveCastXVotes.cshtml" />
+    <Content Include="Areas\Admin\Views\NameBadge\Index.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\html5shiv-printshiv.js" />
