@@ -222,8 +222,11 @@
     <Compile Include="Areas\Admin\Models\Eventbrite\EventbriteModels.cs" />
     <Compile Include="Areas\Admin\Models\Eventbrite\EventbriteUrl.cs" />
     <Compile Include="Areas\Admin\Models\NameBadge.cs" />
+    <Compile Include="Areas\Admin\Models\Twitter\AuthorizationRepsonse.cs" />
+    <Compile Include="Areas\Admin\Models\Twitter\Profile.cs" />
     <Compile Include="Areas\Admin\Models\VotersPerIPAddressViewModel.cs" />
     <Compile Include="Areas\Admin\Models\VotesPerDayViewModel.cs" />
+    <Compile Include="Helpers\EnumerableExtensions.cs" />
     <Compile Include="Helpers\Sessions\AllSessionsLoader.cs" />
     <Compile Include="Helpers\Sessions\ISessionLoader.cs" />
     <Compile Include="Helpers\Sessions\IUserProfileFilter.cs" />
@@ -234,6 +237,7 @@
     <Compile Include="Helpers\Sessions\SubmittedSessionProfileFilter.cs" />
     <Compile Include="Helpers\ChartDataFormatter.cs" />
     <Compile Include="Helpers\Sessions\UserProfileFilterFactory.cs" />
+    <Compile Include="Helpers\TwitterAPI.cs" />
     <Compile Include="NavigationMenu\NavigationMenuModule.cs" />
     <Compile Include="VotingData\DataProviderFactory.cs" />
     <Content Include="Content\Site_print.css" />

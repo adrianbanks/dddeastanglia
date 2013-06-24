@@ -38,6 +38,7 @@ namespace DDDEastAnglia.Areas.Admin.Models.Eventbrite
     {
         public Answer answer{get;set;}
     }
+
     public class Answer
     {
         public string answer_text{get;set;}

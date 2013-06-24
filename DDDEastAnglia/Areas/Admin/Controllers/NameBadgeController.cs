@@ -6,6 +6,7 @@ using System.Net;
 using System.Web.Mvc;
 using DDDEastAnglia.Areas.Admin.Models;
 using DDDEastAnglia.Areas.Admin.Models.Eventbrite;
+using DDDEastAnglia.Helpers;
 using Newtonsoft.Json;
 
 namespace DDDEastAnglia.Areas.Admin.Controllers
@@ -41,6 +42,21 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
                     };
 
                 model.Add(nameBadge);
+            }
+
+            var usersWithTwitterHandles = model.Where(b => !string.IsNullOrWhiteSpace(b.TwitterHandle))
+                                               .ToDictionary(b => b.TwitterHandle.ToUpper(), b => b);
+            var twitterHandles = usersWithTwitterHandles.Values.Select(b => b.TwitterHandle).ToList();
+            var profiles = new TwitterAPI().GetProfiles(twitterHandles);
+
+            foreach (var profile in profiles)
+            {
+                NameBadge badge;
+
+                if (usersWithTwitterHandles.TryGetValue(profile.screen_name.ToUpper(), out badge))
+                {
+                    badge.TwitterImageUrl = profile.profile_image_url;
+                }
             }
 
             return View(model);
@@ -82,7 +98,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
                     twitterHandle = twitterHandle.Substring(1);
                 }
             }
-            
+     
             return twitterHandle;
         }
     }

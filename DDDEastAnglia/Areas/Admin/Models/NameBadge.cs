@@ -6,6 +6,7 @@
         public string FullName{get;set;} 
         public bool HasTwitterInfo{get {return !string.IsNullOrWhiteSpace(TwitterHandle);}}
         public string TwitterHandle{get;set;}
+        public string TwitterImageUrl{get;set;}
         public bool FirstTimer{get;set;}
     }
 }
