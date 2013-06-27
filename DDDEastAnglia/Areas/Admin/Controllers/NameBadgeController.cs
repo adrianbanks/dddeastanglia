@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -35,6 +38,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
 
                 var nameBadge = new NameBadge
                     {
+                        Id = attendee.id.ToString(),
                         TicketId = attendee.ticket_id.ToString(), 
                         FullName = fullName, 
                         TwitterHandle = twitterHandle,
@@ -59,7 +63,40 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
                 }
             }
 
+            this.Session["BadgeInfo"] = model;
+
             return View(model);
+        }
+
+        public FileContentResult Badge(int id)
+        {
+            var badges = (List<NameBadge>) this.Session["BadgeInfo"];
+
+            if (badges != null)
+            {
+                var badgeMap = badges.ToDictionary(b => b.Id, b => b);
+                NameBadge badge;
+
+                if (badgeMap.TryGetValue(id.ToString(), out badge))
+                {
+                    var badgeImage = new Bitmap(189, 112);
+
+                    using (var graphics = Graphics.FromImage(badgeImage))
+                    {
+                        graphics.FillRectangle(Brushes.White, 0, 0, 189, 112);
+                        graphics.DrawRectangle(new Pen(Color.Black), 0, 0, 188, 111);
+                        graphics.DrawString(badge.FullName, new Font(FontFamily.GenericSansSerif, 12), new SolidBrush(Color.Black), 10, 10);
+                    }
+
+                    var stream = new MemoryStream();
+                    badgeImage.Save(stream, ImageFormat.Jpeg);
+                    var bytes = stream.ToArray();
+
+                    return File(bytes, "image/jpeg");
+                }
+            }
+
+            return null;
         }
 
         private static string GetFullName(Attendee attendee)

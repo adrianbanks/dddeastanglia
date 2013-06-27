@@ -2,6 +2,7 @@
 {
     public class NameBadge
     {
+        public string Id{get;set;}
         public string TicketId{get;set;}
         public string FullName{get;set;} 
         public bool HasTwitterInfo{get {return !string.IsNullOrWhiteSpace(TwitterHandle);}}
