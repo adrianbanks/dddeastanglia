@@ -38,6 +38,7 @@ namespace DDDEastAnglia.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Load(typeof(NinjectWebCommon).Assembly);
+            kernel.Bind<IRoleManager>().To<RoleManager>();
         }        
     }
 }
