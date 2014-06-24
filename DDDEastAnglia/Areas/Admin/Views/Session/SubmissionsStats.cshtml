@@ -1,0 +1,63 @@
+﻿@using DDDEastAnglia.Helpers
+@using Newtonsoft.Json
+@model DDDEastAnglia.Areas.Admin.Models.SessionStatsViewModel
+
+@{
+    ViewBag.Title = "Sessions submission statistics";
+}
+
+@section header
+{
+    @Styles.Render("~/Content/admin")
+}
+
+<h2>@ViewBag.Title</h2>
+
+<div id="chart" style="width:100%;height:600px;"></div>
+
+@section scripts
+{
+    @Scripts.Render("~/bundles/flot")
+
+    <script language="javascript">
+        $(document).ready(function() {
+            var data = [
+                {
+                    label: "Sessions per day",
+                    color: "#C00",
+                    data: @JsonConvert.SerializeObject(Model.DayByDay)
+                },
+                {
+                    label: "Cumulative sessions",
+                    color: "#0C0",
+                    data: @JsonConvert.SerializeObject(Model.Cumulative)
+                }
+            ];
+
+            var options = {
+                series: {
+                    lines: { show: true },
+                    points: { show: true },
+                    shadowSize: 2
+                },
+                xaxis: {
+                    axisLabel: "Date",
+                    mode: "time",
+                    timeformat: "%d/%m/%Y"
+                },
+                yaxis: {
+                    axisLabel: "Number of sessions"
+                },
+                grid: {
+                    hoverable: true,
+                    backgroundColor: { colors: ["#fff", "#eee"] },
+                    markings: [
+                        { xaxis: { from: @DateTime.UtcNow.GetJavascriptTimestamp(), to: @DateTime.UtcNow.GetJavascriptTimestamp() }, color: "#444", label: "Today" }
+                    ]
+                }
+            };
+
+            $.plot($("#chart"), data, options);
+        });
+    </script>
+}
