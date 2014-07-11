@@ -12,14 +12,15 @@ namespace DDDEastAnglia.Controllers
     {
         private readonly IUserProfileRepository userProfileRepository;
         private readonly IAccountLoginMethodQuery accountLoginMethodQuery;
-        private readonly IResetPasswordThingy resetPasswordThingy;
+        private readonly IResetPasswordTokenGenerator resetPasswordTokenGenerator;
         private readonly IResetPasswordEmailSender resetPasswordEmailSender;
+        private readonly IPasswordResetter passwordResetter;
 
         public ResetPasswordController(IUserProfileRepository userProfileRepository,
             IAccountLoginMethodQuery accountLoginMethodQuery,
-            IResetPasswordThingy resetPasswordThingy,
-            IResetPasswordEmailSender resetPasswordEmailSender)
-
+            IResetPasswordTokenGenerator resetPasswordTokenGenerator,
+            IResetPasswordEmailSender resetPasswordEmailSender,
+            IPasswordResetter passwordResetter)
         {
             if (userProfileRepository == null)
             {
@@ -31,9 +32,9 @@ namespace DDDEastAnglia.Controllers
                 throw new ArgumentNullException("accountLoginMethodQuery");
             }
 
-            if (resetPasswordThingy == null)
+            if (resetPasswordTokenGenerator == null)
             {
-                throw new ArgumentNullException("resetPasswordThingy");
+                throw new ArgumentNullException("resetPasswordTokenGenerator");
             }
 
             if (resetPasswordEmailSender == null)
@@ -41,10 +42,16 @@ namespace DDDEastAnglia.Controllers
                 throw new ArgumentNullException("resetPasswordEmailSender");
             }
 
+            if (passwordResetter == null)
+            {
+                throw new ArgumentNullException("passwordResetter");
+            }
+
             this.userProfileRepository = userProfileRepository;
             this.accountLoginMethodQuery = accountLoginMethodQuery;
-            this.resetPasswordThingy = resetPasswordThingy;
+            this.resetPasswordTokenGenerator = resetPasswordTokenGenerator;
             this.resetPasswordEmailSender = resetPasswordEmailSender;
+            this.passwordResetter = passwordResetter;
         }
 
         [HttpGet]
@@ -91,7 +98,8 @@ namespace DDDEastAnglia.Controllers
 
             if (dddeaLoginExists)
             {
-                string passwordResetToken = resetPasswordThingy.GeneratePasswordResetToken(profile.UserName, 120);
+                const int tokenExpirationInMinutesFromNow = 120;
+                string passwordResetToken = resetPasswordTokenGenerator.GeneratePasswordResetToken(profile.UserName, tokenExpirationInMinutesFromNow);
                 SendEmailToUser(profile.EmailAddress, passwordResetToken);
             }
 
@@ -115,7 +123,7 @@ namespace DDDEastAnglia.Controllers
                 return View("Step3", model);
             }
 
-            bool passwordWasReset = resetPasswordThingy.ResetPassword(model.ResetToken, model.Password);
+            bool passwordWasReset = passwordResetter.ResetPassword(model.ResetToken, model.Password);
 
             if (passwordWasReset)
             {
