@@ -1,13 +1,57 @@
 ﻿using System;
 using System.Web.Http;
+using DDDEastAnglia.DataAccess;
+using DDDEastAnglia.Domain.Calendar;
 
 namespace DDDEastAnglia.Controllers.JsonFeed
 {
     public class AgendaController : ApiController
     {
+        private readonly ISessionRepository sessionRepository;
+        private readonly IUserProfileRepository userProfileRepository;
+        private readonly ICalendarItemRepository calendarItemRepository;
+
+        public AgendaController(ISessionRepository sessionRepository, IUserProfileRepository userProfileRepository, ICalendarItemRepository calendarItemRepository)
+        {
+            if (sessionRepository == null)
+            {
+                throw new ArgumentNullException("sessionRepository");
+            }
+
+            if (userProfileRepository == null)
+            {
+                throw new ArgumentNullException("userProfileRepository");
+            }
+            
+            if (calendarItemRepository == null)
+            {
+                throw new ArgumentNullException("calendarItemRepository");
+            }
+            
+            this.sessionRepository = sessionRepository;
+            this.userProfileRepository = userProfileRepository;
+            this.calendarItemRepository = calendarItemRepository;
+        }
+
         public DDDEventDetail GetAgenda()
         {
-            var tracks = new[]
+            var tracks = CreateTracks();
+            var timeSlots = CreateTimeSlots();
+            var sessions = CreateSessions();
+
+            var dddEventDetail = new DDDEventDetail
+            {
+                DDDEventId = EventDetailsController.DDDEventId,
+                Tracks = tracks,
+                TimeSlots = timeSlots,
+                Sessions = sessions
+            };
+            return dddEventDetail;
+        }
+
+        private Track[] CreateTracks()
+        {
+            return new[]
             {
                 new Track {Id = 1, Name = "Track 1", RoomName = "Room 1"},
                 new Track {Id = 2, Name = "Track 2", RoomName = "Room 2"},
@@ -15,8 +59,11 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                 new Track {Id = 4, Name = "Track 4", RoomName = "Room 4"},
                 new Track {Id = 5, Name = "Track 5", RoomName = "Room 5"}
             };
+        }
 
-            var timeSlots = new[]
+        private TimeSlot[] CreateTimeSlots()
+        {
+            return new[]
             {
                 new TimeSlot
                 {
@@ -117,104 +164,66 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                     Info = "Close"
                 }
             };
+        }
 
-            var sessions = new[]
+        private Session[] CreateSessions()
+        {
+            return new[]
             {
-                new Session
-                {
-                    DDDEventId = 1,
-                    Id = 1,
-                    TrackId = 1,
-                    TimeSlotId = 3,
-                    Title = "OWIN, Katana and ASP.NET vNext: eliminating the pain of IIS ",
-                    Speaker = "David Simner",
-                    ShortDescription = "",
-                    FullDescription = ""
-                },
-                new Session
-                {
-                    DDDEventId = 1,
-                    Id = 2,
-                    TrackId = 2,
-                    TimeSlotId = 3,
-                    Title = "Github Automation ",
-                    Speaker = "Forbes Lindsay",
-                    ShortDescription = "",
-                    FullDescription = ""
-                },
-                new Session
-                {
-                    DDDEventId = 1,
-                    Id = 3,
-                    TrackId = 3,
-                    TimeSlotId = 3,
-                    Title =
-                        "An Actor's Life for Me – An introduction to the TPL Dataflow Library and asynchronous programming blocks ",
-                    Speaker = "Liam Westley",
-                    ShortDescription = "",
-                    FullDescription = ""
-                },
-                new Session
-                {
-                    DDDEventId = 1,
-                    Id = 4,
-                    TrackId = 4,
-                    TimeSlotId = 3,
-                    Title = "A Unit Testing Swiss Army Knife ",
-                    Speaker = "Adam Kosinski",
-                    ShortDescription = "",
-                    FullDescription = ""
-                },
-                new Session
-                {
-                    DDDEventId = 1,
-                    Id = 5,
-                    TrackId = 5,
-                    TimeSlotId = 3,
-                    Title = "Taking your craft seriously with F# ",
-                    Speaker = "Tomas Petricek",
-                    ShortDescription = "",
-                    FullDescription = ""
-                },
+                CreateSession(4124, 1, 1, 3),
+                CreateSession(104, 2, 2, 3),
+                CreateSession(1109, 3, 3, 3),
+                CreateSession(2117, 4, 4, 3),
+                CreateSession(3132, 5, 5, 3),
 
-//                new Session { DDDEventId = 1, Id = 6, TrackId = 1, TimeSlotId = 5, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 7, TrackId = 2, TimeSlotId = 5, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 8, TrackId = 3, TimeSlotId = 5, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 9, TrackId = 4, TimeSlotId = 5, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 10, TrackId = 5, TimeSlotId = 5, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//
-//                new Session { DDDEventId = 1, Id = 11, TrackId = 1, TimeSlotId = 7, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 12, TrackId = 2, TimeSlotId = 7, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 13, TrackId = 3, TimeSlotId = 7, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 14, TrackId = 4, TimeSlotId = 7, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 15, TrackId = 5, TimeSlotId = 7, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//
-//                new Session { DDDEventId = 1, Id = 16, TrackId = 1, TimeSlotId = 9, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 17, TrackId = 2, TimeSlotId = 9, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 18, TrackId = 3, TimeSlotId = 9, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 19, TrackId = 4, TimeSlotId = 9, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 20, TrackId = 5, TimeSlotId = 9, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//
-//                new Session { DDDEventId = 1, Id = 21, TrackId = 1, TimeSlotId = 1, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 22, TrackId = 2, TimeSlotId = 1, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 23, TrackId = 3, TimeSlotId = 1, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 24, TrackId = 4, TimeSlotId = 1, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
-//                new Session { DDDEventId = 1, Id = 25, TrackId = 5, TimeSlotId = 1, Title = "", Speaker = "" , ShortDescription = "", FullDescription = "" },
+                CreateSession(1108, 6, 1, 5),
+                CreateSession(2107, 7, 2, 5),
+                CreateSession(2115, 8, 3, 5),
+                CreateSession(102, 9, 4, 5),
+                CreateSession(1106, 10, 5, 5),
+
+                CreateSession(3139, 11, 1, 7),
+                CreateSession(1107, 12, 2, 7),
+                CreateSession(3140, 13, 3, 7),
+                CreateSession(1114, 14, 4, 7),
+                CreateSession(2113, 15, 5, 7),
+
+                CreateSession(3125, 16, 1, 9),
+                CreateSession(107, 17, 2, 9),
+                CreateSession(2109, 18, 3, 9),
+                CreateSession(3119, 19, 4, 9),
+                CreateSession(3127, 20, 5, 9),
+
+                CreateSession(4133, 21, 1, 11),
+                CreateSession(2111, 22, 2, 11),
+                CreateSession(108, 23, 3, 11),
+                CreateSession(4135, 24, 4, 11),
+                CreateSession(3129, 25, 5, 11)
             };
+        }
 
-            var dddEventDetail = new DDDEventDetail
+        private Session CreateSession(int sessionId, int id, int trackId, int timeSlotId)
+        {
+            var session = sessionRepository.Get(sessionId);
+            var speaker = userProfileRepository.GetUserProfileByUserName(session.SpeakerUserName);
+
+            return new Session
             {
                 DDDEventId = 1,
-                Tracks = tracks,
-                TimeSlots = timeSlots,
-                Sessions = sessions
+                Id = id,
+                TrackId = trackId,
+                TimeSlotId = timeSlotId,
+                Title = session.Title,
+                Speaker = speaker.Name,
+                ShortDescription = session.Abstract,
+                FullDescription = session.Abstract
             };
-            return dddEventDetail;
         }
 
         private DateTime ToDateTime(int hour, int minute)
         {
-            return new DateTime(2014, 9, 13, hour, minute, 00);
+            var conferenceDate = calendarItemRepository.GetFromType(CalendarEntryType.Conference).StartDate.Date;
+            return new DateTime(conferenceDate.Year, conferenceDate.Month, conferenceDate.Day, hour, minute, 00);
         }
     }
 }
