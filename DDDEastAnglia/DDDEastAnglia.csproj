@@ -229,7 +229,14 @@
     <Compile Include="Areas\Admin\Models\VotersPerIPAddressViewModel.cs" />
     <Compile Include="Areas\Admin\Models\VotesPerDayViewModel.cs" />
     <Content Include="Content\common.css" />
+    <Compile Include="Controllers\JsonFeed\EventDetailsController.cs" />
+    <Compile Include="Controllers\JsonFeed\AgendaController.cs" />
     <Compile Include="Controllers\GravatarController.cs" />
+    <Compile Include="Controllers\JsonFeed\DDDEvent.cs" />
+    <Compile Include="Controllers\JsonFeed\DDDEventDetail.cs" />
+    <Compile Include="Controllers\JsonFeed\Session.cs" />
+    <Compile Include="Controllers\JsonFeed\TimeSlot.cs" />
+    <Compile Include="Controllers\JsonFeed\Track.cs" />
     <Compile Include="Controllers\TimelineController.cs" />
     <Compile Include="Controllers\UserNameFilterAttribute.cs" />
     <Compile Include="DataAccess\CachingVotingCookieFactory.cs" />
