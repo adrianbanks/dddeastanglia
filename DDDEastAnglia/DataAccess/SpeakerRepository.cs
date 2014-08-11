@@ -43,7 +43,7 @@ namespace DDDEastAnglia.DataAccess
                 if (sessionCountGroupedBySpeaker.TryGetValue(userProfile.UserName, out sessionCount)
                         && sessionCount > 0)
                 {
-                    var speakerProfile = createSpeakerProfile(userProfile, sessionCount);
+                    var speakerProfile = CreateSpeakerProfile(userProfile, sessionCount);
                     usersWithSessions.Add(speakerProfile);
                 }
             }
@@ -51,7 +51,7 @@ namespace DDDEastAnglia.DataAccess
             return usersWithSessions;
         }
 
-        private SpeakerProfile createSpeakerProfile(UserProfile userProfile, int numberOfSubmittedSessions)
+        private SpeakerProfile CreateSpeakerProfile(UserProfile userProfile, int numberOfSubmittedSessions)
         {
             return new SpeakerProfile
             {
