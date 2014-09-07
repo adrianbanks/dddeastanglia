@@ -56,8 +56,8 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                 new Track {Id = 1, Name = "Track 1", RoomName = "Room 1"},
                 new Track {Id = 2, Name = "Track 2", RoomName = "Room 2"},
                 new Track {Id = 3, Name = "Track 3", RoomName = "Room 3"},
-                new Track {Id = 4, Name = "Track 4", RoomName = "Room 4"},
-                new Track {Id = 5, Name = "Track 5", RoomName = "Room 5"}
+                new Track {Id = 7, Name = "Track 7", RoomName = "Room 7"},
+                new Track {Id = 8, Name = "Track 8", RoomName = "Room 8"}
             };
         }
 
@@ -160,7 +160,14 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                 {
                     Id = 14,
                     From = ToDateTime(17, 00),
-                    To = ToDateTime(17, 00),
+                    To = ToDateTime(18, 00),
+                    Info = "Drinks Reception (sponsored by Red Gate)"
+                },
+                new TimeSlot
+                {
+                    Id = 15,
+                    From = ToDateTime(18, 00),
+                    To = ToDateTime(18, 00),
                     Info = "Close"
                 }
             };
@@ -170,33 +177,33 @@ namespace DDDEastAnglia.Controllers.JsonFeed
         {
             return new[]
             {
-                CreateSession(4124, 1, 1, 3),
+                CreateSession(1109, 3, 1, 3),
                 CreateSession(104, 2, 2, 3),
-                CreateSession(1109, 3, 3, 3),
+                CreateSession(4124, 1, 3, 3),
                 CreateSession(2117, 4, 4, 3),
                 CreateSession(3132, 5, 5, 3),
 
-                CreateSession(1108, 6, 1, 5),
+                CreateSession(2115, 8, 1, 5),
                 CreateSession(2107, 7, 2, 5),
-                CreateSession(2115, 8, 3, 5),
+                CreateSession(1108, 6, 3, 5),
                 CreateSession(102, 9, 4, 5),
                 CreateSession(1106, 10, 5, 5),
 
-                CreateSession(3139, 11, 1, 7),
+                CreateSession(3140, 13, 1, 7),
                 CreateSession(1107, 12, 2, 7),
-                CreateSession(3140, 13, 3, 7),
+                CreateSession(3139, 11, 3, 7),
                 CreateSession(1114, 14, 4, 7),
                 CreateSession(2113, 15, 5, 7),
 
-                CreateSession(3125, 16, 1, 9),
+                CreateSession(2109, 18, 1, 9),
                 CreateSession(107, 17, 2, 9),
-                CreateSession(2109, 18, 3, 9),
+                CreateSession(3125, 16, 3, 9),
                 CreateSession(3119, 19, 4, 9),
                 CreateSession(3127, 20, 5, 9),
 
-                CreateSession(4133, 21, 1, 11),
+                CreateSession(108, 23, 1, 11),
                 CreateSession(2111, 22, 2, 11),
-                CreateSession(108, 23, 3, 11),
+                CreateSession(4133, 21, 3, 11),
                 CreateSession(4135, 24, 4, 11),
                 CreateSession(3129, 25, 5, 11)
             };
