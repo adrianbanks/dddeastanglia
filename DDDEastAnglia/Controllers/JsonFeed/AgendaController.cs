@@ -56,8 +56,8 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                 new Track {Id = 1, Name = "Track 1", RoomName = "Room 1"},
                 new Track {Id = 2, Name = "Track 2", RoomName = "Room 2"},
                 new Track {Id = 3, Name = "Track 3", RoomName = "Room 3"},
-                new Track {Id = 7, Name = "Track 7", RoomName = "Room 7"},
-                new Track {Id = 8, Name = "Track 8", RoomName = "Room 8"}
+                new Track {Id = 4, Name = "Track 4", RoomName = "Room 7"},
+                new Track {Id = 5, Name = "Track 5", RoomName = "Room 8"}
             };
         }
 
@@ -133,7 +133,7 @@ namespace DDDEastAnglia.Controllers.JsonFeed
                     Id = 10,
                     From = ToDateTime(15, 00),
                     To = ToDateTime(15, 20),
-                    Info = "Break"
+                    Info = "Break, Refreshments (sponsored by DevExpress)"
                 },
                 new TimeSlot
                 {
