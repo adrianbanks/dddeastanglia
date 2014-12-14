@@ -10,6 +10,8 @@ namespace DDDEastAnglia.Controllers
 {
     public class ResetPasswordController : Controller
     {
+        private const int TokenExpirationInMinutesFromNow = 120;
+
         private readonly IUserProfileRepository userProfileRepository;
         private readonly IAccountLoginMethodQuery accountLoginMethodQuery;
         private readonly IResetPasswordTokenGenerator resetPasswordTokenGenerator;
@@ -98,13 +100,22 @@ namespace DDDEastAnglia.Controllers
 
             if (dddeaLoginExists)
             {
-                const int tokenExpirationInMinutesFromNow = 120;
-                string passwordResetToken = resetPasswordTokenGenerator.GeneratePasswordResetToken(profile.UserName, tokenExpirationInMinutesFromNow);
+                string passwordResetToken = resetPasswordTokenGenerator.GeneratePasswordResetToken(profile.UserName, TokenExpirationInMinutesFromNow);
                 SendEmailToUser(profile.EmailAddress, passwordResetToken);
             }
 
             ViewBag.ShowAdditionalHelpMessage = dddeaLoginExists;
             return View("Step2");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator")]
+        public ActionResult SendPasswordResetEmail(string userName)
+        {
+            var profile = userProfileRepository.GetUserProfileByUserName(userName);
+            string passwordResetToken = resetPasswordTokenGenerator.GeneratePasswordResetToken(userName, TokenExpirationInMinutesFromNow);
+            SendEmailToUser(profile.EmailAddress, passwordResetToken);
+            return new ContentResult { Content = "Password reset email sent to user." };
         }
 
         [HttpGet]
