@@ -213,6 +213,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Areas\Admin\Controllers\AgendaController.cs" />
     <Compile Include="Areas\Admin\Controllers\SpeakerController.cs" />
     <Compile Include="App_Start\Filters\AllowedWhenConferenceIsInPreviewAttribute.cs" />
     <Compile Include="App_Start\Filters\AllowedWhenConferenceIsClosedAttribute.cs" />
@@ -603,6 +604,8 @@
     <Content Include="Areas\Admin\Views\Sponsor\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Sponsor\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Sponsor\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Agenda\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Agenda\_SessionListPartial.cshtml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\html5shiv-printshiv.js" />

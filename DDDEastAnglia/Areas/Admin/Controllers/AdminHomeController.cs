@@ -16,7 +16,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
             {
                 throw new ArgumentNullException("conferenceLoader");
             }
-            
+
             this.conferenceLoader = conferenceLoader;
         }
 
@@ -36,8 +36,12 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
         {
             var conference = conferenceLoader.LoadConference();
             bool showVotingStats = conference.CanVote() || conference.AgendaBeingPrepared() || conference.CanPublishAgenda() || conference.CanRegister();
-            var menuViewModel = new MenuViewModel {ShowVotingStatsLink = showVotingStats};
-            return menuViewModel;
+            bool showAgenda = conference.AgendaBeingPrepared() || conference.CanPublishAgenda() || conference.CanRegister();
+            return new MenuViewModel
+            {
+                ShowVotingStatsLink = showVotingStats,
+                ShowAgendaLink = showAgenda
+            };
         }
     }
 }

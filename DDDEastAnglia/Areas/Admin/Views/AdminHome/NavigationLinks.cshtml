@@ -16,4 +16,9 @@
     {
         <li><a href="@Url.Action("Index", "Voting")">Voting</a></li>
     }
+
+    @if (Model.ShowAgendaLink)
+    {
+        <li><a href="@Url.Action("Index", "Agenda")">Agenda</a></li>
+    }
 </ul>

@@ -1,0 +1,8 @@
+﻿@model IEnumerable<DDDEastAnglia.Areas.Admin.Controllers.SessionWithSpeaker>
+
+<select>
+    @foreach (var sessionWithSpeaker in Model)
+    {
+        <option>@sessionWithSpeaker.Speaker.Name - @sessionWithSpeaker.Session.Title</option>
+    }
+</select>
