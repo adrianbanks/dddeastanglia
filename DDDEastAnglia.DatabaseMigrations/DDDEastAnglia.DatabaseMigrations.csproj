@@ -43,6 +43,7 @@
     <Compile Include="Migrations\4-AddAnonymousSessionsSetting.cs" />
     <Compile Include="Migrations\6-AddGuidIdToUsers.cs" />
     <Compile Include="Migrations\5-RemoveExternalLogins.cs" />
+    <Compile Include="Migrations\7-SessionizeSubmissions.cs" />
     <Compile Include="Migrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
