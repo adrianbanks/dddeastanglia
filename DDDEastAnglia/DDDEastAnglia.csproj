@@ -243,6 +243,7 @@
     <Compile Include="IDateTimeOffsetProvider.cs" />
     <Compile Include="LocalDateTimeOffsetProvider.cs" />
     <Compile Include="Models\AboutViewModel.cs" />
+    <Compile Include="Models\LoginMethodViewModel.cs" />
     <Compile Include="Models\TimelineItemModel.cs" />
     <Compile Include="Models\TimelineModel.cs" />
     <Compile Include="Models\SpeakerProfile.cs" />

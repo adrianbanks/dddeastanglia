@@ -86,9 +86,7 @@ namespace DDDEastAnglia.Controllers
 
         public ActionResult About()
         {
-            var conference = conferenceLoader.LoadConference();
-            var showSessionSubmissionLink = conference.CanSubmit();
-            return View(new AboutViewModel { ShowSessionSubmissionLink = showSessionSubmissionLink });
+            return View();
         }
 
         public ActionResult Register()

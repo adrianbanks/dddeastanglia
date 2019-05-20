@@ -2,7 +2,6 @@
 using DDDEastAnglia.DataAccess;
 using DDDEastAnglia.Helpers.Agenda;
 using DDDEastAnglia.Helpers.Sessions;
-using DDDEastAnglia.Models;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -11,32 +10,6 @@ namespace DDDEastAnglia.Tests.Controllers
     [TestFixture]
     public sealed class HomeControllerTests
     {
-        [Test]
-        public void SubmitSessionLinks_ShouldBeHidden_WhenSessionSubmissionIsNotOpen()
-        {
-            var conferenceLoader = new ConferenceLoaderBuilder()
-                                        .WithSessionSubmissionClosed()
-                                        .Build();
-            var homeController = CreateHomeController(conferenceLoader);
-
-            var model = homeController.About().GetViewModel<AboutViewModel>();
-
-            Assert.That(model.ShowSessionSubmissionLink, Is.False);
-        }
-
-        [Test]
-        public void SubmitSessionLinks_ShouldBeShown_WhenSessionSubmissionIsOpen()
-        {
-            var conferenceLoader = new ConferenceLoaderBuilder()
-                                        .WithSessionSubmissionOpen()
-                                        .Build();
-            var homeController = CreateHomeController(conferenceLoader);
-
-            var model = homeController.About().GetViewModel<AboutViewModel>();
-
-            Assert.That(model.ShowSessionSubmissionLink, Is.True);
-        }
-
         [Test]
         public void Agenda_ShouldRedirectBackToIndex_WhenTheAgendaCannotBePublished()
         {
