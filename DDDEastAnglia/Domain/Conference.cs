@@ -11,9 +11,11 @@ namespace DDDEastAnglia.Domain
         private readonly int numberOfTimeSlots;
         private readonly int numberOfTracks;
         private readonly bool anonymousSessions;
+        private readonly SessionizeInfo sessionizeInfo;
+
         private readonly Dictionary<CalendarEntryType, CalendarEntry> calendarEntries = new Dictionary<CalendarEntryType, CalendarEntry>();
 
-        public Conference(int id, string name, string shortName, int numberOfTimeSlots = 0, int numberOfTracks = 0, bool anonymousSessions = false)
+        public Conference(int id, string name, string shortName, int numberOfTimeSlots = 0, int numberOfTracks = 0, bool anonymousSessions = false, string sessionizeId = null, string sessionizeName = null)
         {
             this.id = id;
             this.name = name;
@@ -21,6 +23,7 @@ namespace DDDEastAnglia.Domain
             this.numberOfTimeSlots = numberOfTimeSlots;
             this.numberOfTracks = numberOfTracks;
             this.anonymousSessions = anonymousSessions;
+            sessionizeInfo = new SessionizeInfo(sessionizeId, sessionizeName);
         }
 
         public int Id
@@ -50,6 +53,8 @@ namespace DDDEastAnglia.Domain
 
         public int TotalNumberOfSessions { get { return NumberOfTimeSlots * NumberOfTracks; } }
 
+        public SessionizeInfo SessionizeInfo { get { return sessionizeInfo;} }
+
         public bool CanSubmit()
         {
             return ConferenceTimelineIsActive() && GetCalendarEntry(CalendarEntryType.SessionSubmission).IsOpen();
@@ -63,7 +68,7 @@ namespace DDDEastAnglia.Domain
         public bool AgendaBeingPrepared()
         {
             return calendarEntries[CalendarEntryType.Voting].HasPassed()
-                    && calendarEntries[CalendarEntryType.AgendaPublished].YetToOpen();
+                   && calendarEntries[CalendarEntryType.AgendaPublished].YetToOpen();
         }
 
         public bool CanPublishAgenda()
@@ -94,6 +99,11 @@ namespace DDDEastAnglia.Domain
         public bool IsClosed()
         {
             return GetCalendarEntry(CalendarEntryType.Closed).IsOpen();
+        }
+
+        public bool IsUsingSessionize()
+        {
+            return sessionizeInfo.IsValid();
         }
 
         private bool ConferenceTimelineIsActive()

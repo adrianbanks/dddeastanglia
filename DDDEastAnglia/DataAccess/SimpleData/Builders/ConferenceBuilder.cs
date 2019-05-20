@@ -17,7 +17,7 @@ namespace DDDEastAnglia.DataAccess.SimpleData.Builders
 
         public Domain.Conference Build(Conference item)
         {
-            var conference = new Domain.Conference(item.ConferenceId, item.Name, item.ShortName, item.NumberOfTimeSlots, item.NumberOfTracks, item.AnonymousSessions);
+            var conference = new Domain.Conference(item.ConferenceId, item.Name, item.ShortName, item.NumberOfTimeSlots, item.NumberOfTracks, item.AnonymousSessions, item.SessionizeId, item.SessionizeName);
             var calendarItems = calendarItemRepository.GetAll();
 
             foreach (var calendarItem in calendarItems)

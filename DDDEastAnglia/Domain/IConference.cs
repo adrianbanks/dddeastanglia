@@ -10,6 +10,8 @@
         int NumberOfTracks{get;}
         int TotalNumberOfSessions{get;}
 
+        SessionizeInfo SessionizeInfo { get; }
+
         bool CanSubmit();
         bool CanVote();
         bool CanPublishAgenda();
@@ -19,5 +21,6 @@
         bool CanShowSpeakers();
         bool IsPreview();
         bool IsClosed();
+        bool IsUsingSessionize();
     }
 }
