@@ -8,23 +8,23 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public class SubmittedSessionProfileFilter : IUserProfileFilter
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
 
-        public SubmittedSessionProfileFilter(ISessionRepository sessionRepository)
+        public SubmittedSessionProfileFilter(SessionRepositoryFactory sessionRepositoryFactory)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException("sessionRepository");
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
-            
-            this.sessionRepository = sessionRepository;
+
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
         }
 
         public IEnumerable<UserProfile> FilterProfiles(IEnumerable<UserProfile> profiles)
         {
             return profiles.Where(profile =>
             {
-                var submittedSessions = sessionRepository.GetSessionsSubmittedBy(profile.UserName);
+                var submittedSessions = sessionRepositoryFactory.Create().GetSessionsSubmittedBy(profile.UserName);
                 return submittedSessions != null && submittedSessions.Any(s => s.SpeakerUserName == profile.UserName);
             });
         }

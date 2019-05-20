@@ -11,22 +11,22 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly IUserProfileRepository userProfileRepository;
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
 
-        public UserController(IUserProfileRepository userProfileRepository, ISessionRepository sessionRepository)
+        public UserController(IUserProfileRepository userProfileRepository, SessionRepositoryFactory sessionRepositoryFactory)
         {
             if (userProfileRepository == null)
             {
                 throw new ArgumentNullException("userProfileRepository");
             }
 
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException("sessionRepository");
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
 
             this.userProfileRepository = userProfileRepository;
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
         }
 
         public ActionResult Index()
@@ -35,9 +35,10 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
                                              .Select(CreateUserModel)
                                              .OrderBy(u => u.UserName).ToList();
 
-            var sessionCountsPerUser = sessionRepository.GetAllSessions()
-                                                        .GroupBy(s => s.SpeakerUserName)
-                                                        .ToDictionary(g => g.Key, g => g.Count());
+            var sessionCountsPerUser = sessionRepositoryFactory.Create()
+                                                               .GetAllSessions()
+                                                               .GroupBy(s => s.SpeakerUserName)
+                                                               .ToDictionary(g => g.Key, g => g.Count());
 
             foreach (var user in users)
             {

@@ -9,29 +9,30 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public class SessionController : Controller
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
         private readonly IVoteRepository voteRepository;
 
-        public SessionController(ISessionRepository sessionRepository, IVoteRepository voteRepository)
+        public SessionController(SessionRepositoryFactory sessionRepositoryFactory, IVoteRepository voteRepository)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException("sessionRepository");
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
 
             if (voteRepository == null)
             {
                 throw new ArgumentNullException("voteRepository");
             }
-            
-            this.sessionRepository = sessionRepository;
+
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
             this.voteRepository = voteRepository;
         }
 
         public ActionResult Index()
         {
             var votesGroupedBySessionId = voteRepository.GetAllVotes().GroupBy(v => v.SessionId).ToDictionary(g => g.Key, g => g.Count());
-            var sessions = sessionRepository.GetAllSessions().ToList();
+            var sessions = sessionRepositoryFactory.Create().GetAllSessions().ToList();
 
             foreach (var session in sessions)
             {
@@ -46,13 +47,13 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
 
         public ActionResult Details(int id)
         {
-            var session = sessionRepository.Get(id);
+            var session = sessionRepositoryFactory.Create().Get(id);
             return session == null ? (ActionResult) HttpNotFound() : View(session);
         }
 
         public ActionResult Edit(int id)
         {
-            var session = sessionRepository.Get(id);
+            var session = sessionRepositoryFactory.Create().Get(id);
             return session == null ? (ActionResult) HttpNotFound() : View(session);
         }
 
@@ -62,7 +63,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                sessionRepository.UpdateSession(session);
+                sessionRepositoryFactory.Create().UpdateSession(session);
                 return RedirectToAction("Index");
             }
 
@@ -71,7 +72,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            var session = sessionRepository.Get(id);
+            var session = sessionRepositoryFactory.Create().Get(id);
             return session == null ? (ActionResult) HttpNotFound() : View(session);
         }
 
@@ -79,7 +80,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            sessionRepository.DeleteSession(id);
+            sessionRepositoryFactory.Create().DeleteSession(id);
             return RedirectToAction("Index");
         }
     }

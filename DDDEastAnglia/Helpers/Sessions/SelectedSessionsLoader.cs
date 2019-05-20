@@ -8,14 +8,14 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public sealed class SelectedSessionsLoader : ISessionLoader
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
         private readonly IEnumerable<int> sessionIds;
 
-        public SelectedSessionsLoader(ISessionRepository sessionRepository, IEnumerable<int> selectedSessionIds)
+        public SelectedSessionsLoader(SessionRepositoryFactory sessionRepositoryFactory, IEnumerable<int> selectedSessionIds)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException(nameof(sessionRepository));
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
 
             if (selectedSessionIds == null)
@@ -23,13 +23,13 @@ namespace DDDEastAnglia.Helpers.Sessions
                 throw new ArgumentNullException(nameof(selectedSessionIds));
             }
 
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
             this.sessionIds = selectedSessionIds;
         }
 
         public IEnumerable<Session> LoadSessions()
         {
-            var sessions = sessionRepository.GetAllSessions().ToList();
+            var sessions = sessionRepositoryFactory.Create().GetAllSessions().ToList();
             return Filter(sessions);
         }
 
@@ -40,7 +40,7 @@ namespace DDDEastAnglia.Helpers.Sessions
                 throw new ArgumentNullException(nameof(profile));
             }
 
-            var sessions = sessionRepository.GetSessionsSubmittedBy(profile.UserName);
+            var sessions = sessionRepositoryFactory.Create().GetSessionsSubmittedBy(profile.UserName);
             return Filter(sessions);
         }
 

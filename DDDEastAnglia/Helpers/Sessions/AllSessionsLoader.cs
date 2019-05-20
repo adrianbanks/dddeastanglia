@@ -7,21 +7,21 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public class AllSessionsLoader : ISessionLoader
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
 
-        public AllSessionsLoader(ISessionRepository sessionRepository)
+        public AllSessionsLoader(SessionRepositoryFactory sessionRepositoryFactory)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException("sessionRepository");
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
 
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
         }
 
         public IEnumerable<Session> LoadSessions()
         {
-            return sessionRepository.GetAllSessions();
+            return sessionRepositoryFactory.Create().GetAllSessions();
         }
 
         public IEnumerable<Session> LoadSessions(UserProfile profile)
@@ -31,7 +31,7 @@ namespace DDDEastAnglia.Helpers.Sessions
                 throw new ArgumentNullException("profile");
             }
 
-            return sessionRepository.GetSessionsSubmittedBy(profile.UserName);
+            return sessionRepositoryFactory.Create().GetSessionsSubmittedBy(profile.UserName);
         }
     }
 }

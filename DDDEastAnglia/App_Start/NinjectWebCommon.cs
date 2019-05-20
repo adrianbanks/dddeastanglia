@@ -52,9 +52,10 @@ namespace DDDEastAnglia.App_Start
             var conferenceLoader = context.Kernel.Get<IConferenceLoader>();
             var conference = conferenceLoader.LoadConference();
 
-            var sessionRepository = context.Kernel.Get<ISessionRepository>();
+            var sessionRepositoryFactory = context.Kernel.Get<SessionRepositoryFactory>();
 
-            var factory = new SessionLoaderFactory(sessionRepository);
-            return factory.Create(conference);        }
+            var factory = new SessionLoaderFactory(sessionRepositoryFactory);
+            return factory.Create(conference);
+        }
     }
 }

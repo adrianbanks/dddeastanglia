@@ -16,6 +16,8 @@ namespace DDDEastAnglia.Domain
             return !string.IsNullOrEmpty(id);
         }
 
+        public string ConferenceId { get { return id; } }
+
         public string SubmissionUrl
         {
             get { return string.Format("https://sessionize.com/{0}/", name); }

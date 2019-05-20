@@ -11,16 +11,16 @@ namespace DDDEastAnglia.Helpers.Sessions
 
     public sealed class SessionLoaderFactory : ISessionLoaderFactory
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
 
-        public SessionLoaderFactory(ISessionRepository sessionRepository)
+        public SessionLoaderFactory(SessionRepositoryFactory sessionRepositoryFactory)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException(nameof(sessionRepository));
+                throw new ArgumentNullException(nameof(sessionRepositoryFactory));
             }
 
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
         }
 
         public ISessionLoader Create(IConference conference)
@@ -29,11 +29,11 @@ namespace DDDEastAnglia.Helpers.Sessions
 
             if (conference.CanPublishAgenda())
             {
-                sessionLoader = new SelectedSessionsLoader(sessionRepository, SelectedSessions.SessionIds);
+                sessionLoader = new SelectedSessionsLoader(sessionRepositoryFactory, SelectedSessions.SessionIds);
             }
             else
             {
-                sessionLoader = new AllSessionsLoader(sessionRepository);
+                sessionLoader = new AllSessionsLoader(sessionRepositoryFactory);
             }
 
             return sessionLoader;

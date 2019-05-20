@@ -7,14 +7,14 @@ namespace DDDEastAnglia.DataAccess
 {
     public class SpeakerRepository : ISpeakerRepository
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
         private readonly IUserProfileRepository userProfileRepository;
 
-        public SpeakerRepository(ISessionRepository sessionRepository, IUserProfileRepository userProfileRepository)
+        public SpeakerRepository(SessionRepositoryFactory sessionRepositoryFactory, IUserProfileRepository userProfileRepository)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException("sessionRepository");
+                throw new ArgumentNullException("sessionRepositoryFactory");
             }
 
             if (userProfileRepository == null)
@@ -22,13 +22,13 @@ namespace DDDEastAnglia.DataAccess
                 throw new ArgumentNullException("userProfileRepository");
             }
 
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
             this.userProfileRepository = userProfileRepository;
         }
 
         public IEnumerable<SpeakerProfile> GetAllSpeakerProfiles()
         {
-            var allSessions = sessionRepository.GetAllSessions();
+            var allSessions = sessionRepositoryFactory.Create().GetAllSessions();
             var sessionCountGroupedBySpeaker = allSessions.GroupBy(s => s.SpeakerUserName)
                                                           .Where(g => g.Any())
                                                           .ToDictionary(g => g.Key, g => g.Count());

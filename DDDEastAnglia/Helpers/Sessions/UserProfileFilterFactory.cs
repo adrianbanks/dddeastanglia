@@ -11,16 +11,16 @@ namespace DDDEastAnglia.Helpers.Sessions
 
     public sealed class UserProfileFilterFactory : IUserProfileFilterFactory
     {
-        private readonly ISessionRepository sessionRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
 
-        public UserProfileFilterFactory(ISessionRepository sessionRepository)
+        public UserProfileFilterFactory(SessionRepositoryFactory sessionRepositoryFactory)
         {
-            if (sessionRepository == null)
+            if (sessionRepositoryFactory == null)
             {
-                throw new ArgumentNullException(nameof(sessionRepository));
+                throw new ArgumentNullException(nameof(sessionRepositoryFactory));
             }
 
-            this.sessionRepository = sessionRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
         }
 
         public IUserProfileFilter Create(IConference conference)
@@ -33,7 +33,7 @@ namespace DDDEastAnglia.Helpers.Sessions
             }
             else
             {
-                userProfileFilter = new SubmittedSessionProfileFilter(sessionRepository);
+                userProfileFilter = new SubmittedSessionProfileFilter(sessionRepositoryFactory);
             }
 
             return userProfileFilter;

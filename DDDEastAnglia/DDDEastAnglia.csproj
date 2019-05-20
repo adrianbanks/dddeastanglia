@@ -211,6 +211,9 @@
     <Compile Include="DataAccess\ISpeakerRepository.cs" />
     <Compile Include="DataAccess\ISponsorRepository.cs" />
     <Compile Include="DataAccess\DefaultSponsorSorter.cs" />
+    <Compile Include="DataAccess\Sessionize\SessionizeDataLoader.cs" />
+    <Compile Include="DataAccess\Sessionize\SessionizeSessionRepository.cs" />
+    <Compile Include="DataAccess\SessionRepositoryFactory.cs" />
     <Compile Include="Domain\SessionizeInfo.cs" />
     <Compile Include="Helpers\Agenda\AgendaSessionsLoader.cs" />
     <Compile Include="Models\Agenda.cs" />
