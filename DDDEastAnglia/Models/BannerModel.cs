@@ -6,5 +6,6 @@
         public bool IsOpenForVoting { get; set; }
         public string SessionSubmissionCloses { get; set; }
         public string VotingCloses { get;  set; }
+        public string SubmissionUrl { get; set; }
     }
 }

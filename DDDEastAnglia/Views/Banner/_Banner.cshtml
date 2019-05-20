@@ -4,13 +4,24 @@
 {
     <div id="notifications-banner" data-expires="@Model.SessionSubmissionCloses">
         <span class="dismiss"><a href="#" title="Dismiss this notification">&times;</a></span>
-        <p>Session submission is now open. If you would like to speak at DDD East Anglia, please @Html.ActionLink("submit a session", "Create", "Session", null, new { @class = "submit-session" }).</p>
-    </div>                                
+        <p>
+            Session submission is now open. If you would like to speak at DDD East Anglia, please
+
+            @if (Model.SubmissionUrl != null)
+            {
+                <a href="@Model.SubmissionUrl" class="submit-session">submit a session</a>
+            }
+            else
+            {
+                @Html.ActionLink("submit a session", "Create", "Session", null, new { @class = "submit-session" })
+            }.
+        </p>
+    </div>
 }
 else if (@Model.IsOpenForVoting)
 {
     <div id="notifications-banner" data-expires="@Model.VotingCloses">
         <span class="dismiss"><a href="#" title="Dismiss this notification">&times;</a></span>
         <p>Session voting is now open. Please @Html.ActionLink("vote on the sessions", "Index", "Session") you would like to see at DDD East Anglia.</p>
-    </div>                                
+    </div>
 }
