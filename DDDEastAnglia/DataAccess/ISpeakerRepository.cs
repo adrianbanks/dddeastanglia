@@ -6,5 +6,6 @@ namespace DDDEastAnglia.DataAccess
     public interface ISpeakerRepository
     {
         IEnumerable<SpeakerProfile> GetAllSpeakerProfiles();
+        SpeakerProfile GetProfileByUserName(string userName);
     }
 }

@@ -13,15 +13,15 @@ namespace DDDEastAnglia.Controllers
     public class SessionController : Controller
     {
         private readonly IConferenceLoader conferenceLoader;
-        private readonly IUserProfileRepository userProfileRepository;
-        private readonly ISessionRepository sessionRepository;
+        private readonly ISpeakerRepository speakerRepository;
+        private readonly SessionRepositoryFactory sessionRepositoryFactory;
         private readonly ISessionSorter sessionSorter;
 
-        public SessionController(IConferenceLoader conferenceLoader, IUserProfileRepository userProfileRepository, ISessionRepository sessionRepository, ISessionSorter sorter)
+        public SessionController(IConferenceLoader conferenceLoader, ISpeakerRepository speakerRepository, SessionRepositoryFactory sessionRepositoryFactory, ISessionSorter sorter)
         {
             this.conferenceLoader = conferenceLoader;
-            this.userProfileRepository = userProfileRepository;
-            this.sessionRepository = sessionRepository;
+            this.speakerRepository = speakerRepository;
+            this.sessionRepositoryFactory = sessionRepositoryFactory;
             sessionSorter = sorter;
         }
 
@@ -36,8 +36,8 @@ namespace DDDEastAnglia.Controllers
                 return HttpNotFound();
             }
 
-            var speakersLookup = userProfileRepository.GetAllUserProfiles().ToDictionary(p => p.UserName, p => p);
-            var sessions = sessionRepository.GetAllSessions();
+            var speakersLookup = speakerRepository.GetAllSpeakerProfiles().ToDictionary(p => p.UserName, p => p);
+            var sessions = sessionRepositoryFactory.Create().GetAllSessions();
 
             var allSessions = new List<SessionDisplayModel>();
             var showSpeaker = conference.CanShowSpeakers();
@@ -62,18 +62,17 @@ namespace DDDEastAnglia.Controllers
         [AllowAnonymous]
         public ActionResult Details(int id = 0)
         {
-            Session session = sessionRepository.Get(id);
+            var session = sessionRepositoryFactory.Create().Get(id);
 
             if (session == null)
             {
                 return HttpNotFound();
             }
 
-            var userProfile = userProfileRepository.GetUserProfileByUserName(session.SpeakerUserName);
-
             var conference = conferenceLoader.LoadConference();
             var showSpeaker = conference.CanShowSpeakers();
 
+            var userProfile = speakerRepository.GetProfileByUserName(session.SpeakerUserName);
             var displayModel = CreateDisplayModel(session, userProfile, showSpeaker);
 
             return View(displayModel);
@@ -93,7 +92,7 @@ namespace DDDEastAnglia.Controllers
                 return RedirectToAction("Index");
             }
 
-            var userProfile = userProfileRepository.GetUserProfileByUserName(User.Identity.Name);
+            var userProfile = speakerRepository.GetProfileByUserName(User.Identity.Name);
 
             if (userProfile == null)
             {
@@ -116,7 +115,7 @@ namespace DDDEastAnglia.Controllers
             if (ModelState.IsValid)
             {
                 session.SubmittedAt = DateTimeOffset.UtcNow;
-                var addedSession = sessionRepository.AddSession(session);
+                var addedSession = sessionRepositoryFactory.Create().AddSession(session);
                 return RedirectToAction("Details", new {id = addedSession.SessionId});
             }
 
@@ -126,7 +125,7 @@ namespace DDDEastAnglia.Controllers
         [UserNameFilter("userName")]
         public ActionResult Edit(string userName, int id = 0)
         {
-            Session session = sessionRepository.Get(id);
+            Session session = sessionRepositoryFactory.Create().Get(id);
 
             if (session == null)
             {
@@ -145,7 +144,7 @@ namespace DDDEastAnglia.Controllers
         [UserNameFilter("userName")]
         public ActionResult Edit(string userName, [Bind(Exclude = "Votes")] Session session)
         {
-            var loadedSession = sessionRepository.Get(session.SessionId);
+            var loadedSession = sessionRepositoryFactory.Create().Get(session.SessionId);
 
             if (UserDoesNotOwnSession(userName, loadedSession))
             {
@@ -154,7 +153,7 @@ namespace DDDEastAnglia.Controllers
 
             if (ModelState.IsValid)
             {
-                sessionRepository.UpdateSession(session);
+                sessionRepositoryFactory.Create().UpdateSession(session);
                 return RedirectToAction("Index");
             }
 
@@ -164,7 +163,7 @@ namespace DDDEastAnglia.Controllers
         [UserNameFilter("userName")]
         public ActionResult Delete(string userName, int id = 0)
         {
-            var session = sessionRepository.Get(id);
+            Session session = sessionRepositoryFactory.Create().Get(id);
 
             if (session == null)
             {
@@ -179,8 +178,9 @@ namespace DDDEastAnglia.Controllers
             var conference = conferenceLoader.LoadConference();
             var showSpeaker = conference.CanShowSpeakers();
 
-            var userProfile = userProfileRepository.GetUserProfileByUserName(session.SpeakerUserName);
+            var userProfile = speakerRepository.GetProfileByUserName(session.SpeakerUserName);
             var displayModel = CreateDisplayModel(session, userProfile, showSpeaker);
+
             return View(displayModel);
         }
 
@@ -189,18 +189,18 @@ namespace DDDEastAnglia.Controllers
         [UserNameFilter("userName")]
         public ActionResult DeleteConfirmed(string userName, int id)
         {
-            Session session = sessionRepository.Get(id);
+            Session session = sessionRepositoryFactory.Create().Get(id);
 
             if (UserDoesNotOwnSession(userName, session))
             {
                 return new HttpUnauthorizedResult();
             }
 
-            sessionRepository.DeleteSession(id);
+            sessionRepositoryFactory.Create().DeleteSession(id);
             return RedirectToAction("Index");
         }
 
-        private SessionDisplayModel CreateDisplayModel(Session session, UserProfile profile, bool showSpeaker)
+        private SessionDisplayModel CreateDisplayModel(Session session, SpeakerProfile profile, bool showSpeaker)
         {
             var isUsersSession = Request.IsAuthenticated && session.SpeakerUserName == User.Identity.Name;
 
@@ -214,7 +214,7 @@ namespace DDDEastAnglia.Controllers
                     {
                         new SessionSpeakerModel
                         {
-                            SpeakerId = profile.Id,
+                            SpeakerId = profile.UserId,
                             SpeakerName = profile.Name,
                             SpeakerUserName = session.SpeakerUserName,
                             SpeakerGravatarUrl = profile.GravatarUrl(),

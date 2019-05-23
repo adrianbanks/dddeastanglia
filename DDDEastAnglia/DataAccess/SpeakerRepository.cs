@@ -51,6 +51,16 @@ namespace DDDEastAnglia.DataAccess
             return usersWithSessions;
         }
 
+        public SpeakerProfile GetProfileByUserName(string userName)
+        {
+//            var allSessions = sessionRepositoryFactory.Create().GetAllSessions();
+//            allSessions.Where(s => )
+
+
+//            return createSpeakerProfile(userProfile, sessionCount);
+            return null;
+        }
+
         private SpeakerProfile createSpeakerProfile(UserProfile userProfile, int numberOfSubmittedSessions)
         {
             return new SpeakerProfile
