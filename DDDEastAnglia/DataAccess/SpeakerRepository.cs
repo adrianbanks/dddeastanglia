@@ -7,10 +7,10 @@ namespace DDDEastAnglia.DataAccess
 {
     public class SpeakerRepository : ISpeakerRepository
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
         private readonly IUserProfileRepository userProfileRepository;
 
-        public SpeakerRepository(SessionRepositoryFactory sessionRepositoryFactory, IUserProfileRepository userProfileRepository)
+        public SpeakerRepository(ISessionRepositoryFactory sessionRepositoryFactory, IUserProfileRepository userProfileRepository)
         {
             if (sessionRepositoryFactory == null)
             {

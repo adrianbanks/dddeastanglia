@@ -13,9 +13,9 @@ namespace DDDEastAnglia.Tests.DataAccess
         [Test]
         public void GetAllSpeakerProfiles_DoesNotReturnAUserWhoHasNotSubmittedASession()
         {
-            var sessionRespository = new SessionRepositoryBuilder().Build();
+            var sessionRepositoryFactory = new SessionRepositoryFactoryBuilder().Build();
             var userProfileRepository = new UserProfileRepositoryBuilder().WithUser("fred").Build();
-            var speakerRepository = new SpeakerRepository(sessionRespository, userProfileRepository);
+            var speakerRepository = new SpeakerRepository(sessionRepositoryFactory, userProfileRepository);
 
             var allSpeakers = speakerRepository.GetAllSpeakerProfiles();
 
@@ -25,9 +25,9 @@ namespace DDDEastAnglia.Tests.DataAccess
         [Test]
         public void GetAllSpeakerProfiles_ReturnsAUserWhoHasSubmittedASession()
         {
-            var sessionRespository = new SessionRepositoryBuilder().WithSessionSubmittedBy("fred").Build();
+            var sessionRepositoryFactory = new SessionRepositoryFactoryBuilder().WithSessionSubmittedBy("fred").Build();
             var userProfileRepository = new UserProfileRepositoryBuilder().WithUser("fred").Build();
-            var speakerRepository = new SpeakerRepository(sessionRespository, userProfileRepository);
+            var speakerRepository = new SpeakerRepository(sessionRepositoryFactory, userProfileRepository);
 
             var allSpeakers = speakerRepository.GetAllSpeakerProfiles();
 
@@ -37,30 +37,34 @@ namespace DDDEastAnglia.Tests.DataAccess
         [Test]
         public void GetAllSpeakerProfiles_ReturnsOnlyUsersWhoHaveSubmittedSessions()
         {
-            var sessionRespository = new SessionRepositoryBuilder().WithSessionSubmittedBy("fred").Build();
+            var sessionRepositoryFactory = new SessionRepositoryFactoryBuilder().WithSessionSubmittedBy("fred").Build();
             var userProfileRepository = new UserProfileRepositoryBuilder().WithUser("fred").WithUser("bob").Build();
-            var speakerRepository = new SpeakerRepository(sessionRespository, userProfileRepository);
+            var speakerRepository = new SpeakerRepository(sessionRepositoryFactory, userProfileRepository);
 
             var allSpeakers = speakerRepository.GetAllSpeakerProfiles();
 
             Assert.That(allSpeakers.Select(s => s.UserName), Is.EqualTo(new[] {"fred"}));
         }
 
-        private class SessionRepositoryBuilder
+        private class SessionRepositoryFactoryBuilder
         {
             private readonly List<Session> sessions = new List<Session>();
 
-            public SessionRepositoryBuilder WithSessionSubmittedBy(string username)
+            public SessionRepositoryFactoryBuilder WithSessionSubmittedBy(string username)
             {
                 sessions.Add(new Session {SpeakerUserName = username});
                 return this;
             }
 
-            public ISessionRepository Build()
+            public ISessionRepositoryFactory Build()
             {
-                var sessionRespository = Substitute.For<ISessionRepository>();
-                sessionRespository.GetAllSessions().Returns(sessions);
-                return sessionRespository;
+                var sessionRepository = Substitute.For<ISessionRepository>();
+                sessionRepository.GetAllSessions().Returns(sessions);
+
+                var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+                sessionRepositoryFactory.Create().Returns(sessionRepository);
+
+                return sessionRepositoryFactory;
             }
         }
 
@@ -76,9 +80,9 @@ namespace DDDEastAnglia.Tests.DataAccess
 
             public IUserProfileRepository Build()
             {
-                var userProfileRepsoitory = Substitute.For<IUserProfileRepository>();
-                userProfileRepsoitory.GetAllUserProfiles().Returns(userProfiles);
-                return userProfileRepsoitory;
+                var userProfileRepository = Substitute.For<IUserProfileRepository>();
+                userProfileRepository.GetAllUserProfiles().Returns(userProfiles);
+                return userProfileRepository;
             }
         }
     }

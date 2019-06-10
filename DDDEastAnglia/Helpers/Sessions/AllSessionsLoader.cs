@@ -7,9 +7,9 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public class AllSessionsLoader : ISessionLoader
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
 
-        public AllSessionsLoader(SessionRepositoryFactory sessionRepositoryFactory)
+        public AllSessionsLoader(ISessionRepositoryFactory sessionRepositoryFactory)
         {
             if (sessionRepositoryFactory == null)
             {

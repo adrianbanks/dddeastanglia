@@ -86,15 +86,17 @@ namespace DDDEastAnglia.Tests.Controllers
             {
                 var conferenceLoader = Substitute.For<IConferenceLoader>();
                 conferenceLoader.LoadConference().Returns(conference);
-                var controller = new SessionController(conferenceLoader, Substitute.For<IUserProfileRepository>(), Substitute.For<ISessionRepository>(), Substitute.For<ISessionSorter>());
+                var controller = new SessionController(conferenceLoader, Substitute.For<ISpeakerRepository>(), Substitute.For<ISessionRepositoryFactory>(), Substitute.For<ISessionSorter>());
                 return controller;
             }
 
             public static SessionController Create(Session session)
             {
+                var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
                 var sessionRepository = Substitute.For<ISessionRepository>();
                 sessionRepository.Get(session.SessionId).Returns(session);
-                var controller = new SessionController(Substitute.For<IConferenceLoader>(), Substitute.For<IUserProfileRepository>(), sessionRepository, Substitute.For<ISessionSorter>());
+                sessionRepositoryFactory.Create().Returns(sessionRepository);
+                var controller = new SessionController(Substitute.For<IConferenceLoader>(), Substitute.For<ISpeakerRepository>(), sessionRepositoryFactory, Substitute.For<ISessionSorter>());
                 return controller;
             }
         }

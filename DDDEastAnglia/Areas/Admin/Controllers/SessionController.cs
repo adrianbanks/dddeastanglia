@@ -9,10 +9,10 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public class SessionController : Controller
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
         private readonly IVoteRepository voteRepository;
 
-        public SessionController(SessionRepositoryFactory sessionRepositoryFactory, IVoteRepository voteRepository)
+        public SessionController(ISessionRepositoryFactory sessionRepositoryFactory, IVoteRepository voteRepository)
         {
             if (sessionRepositoryFactory == null)
             {

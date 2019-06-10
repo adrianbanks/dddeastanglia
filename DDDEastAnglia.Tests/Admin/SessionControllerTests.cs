@@ -14,10 +14,10 @@ namespace DDDEastAnglia.Tests.Admin
         public void Details_GetsTheCorrectSessionDetails()
         {
             const int sessionId = 123;
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            sessionRepository.Get(sessionId).Returns(new Session {SessionId = sessionId});
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Get(sessionId).Returns(new Session { SessionId = sessionId });
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Details(sessionId);
 
@@ -28,9 +28,9 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Details_ReturnsA404_WhenTheUserCannotBeFound()
         {
-            var sessionRepository = Substitute.For<ISessionRepository>();
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Details(123);
 
@@ -41,10 +41,10 @@ namespace DDDEastAnglia.Tests.Admin
         public void Edit_GetsTheCorrectSessionDetails()
         {
             const int sessionId = 123;
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            sessionRepository.Get(sessionId).Returns(new Session { SessionId = sessionId });
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Get(sessionId).Returns(new Session { SessionId = sessionId });
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Edit(sessionId);
 
@@ -55,9 +55,9 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Edit_ReturnsA404_WhenTheUserCannotBeFound()
         {
-            var sessionRepository = Substitute.For<ISessionRepository>();
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Edit(123);
 
@@ -67,9 +67,11 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Edit_SavesTheUserProfileCorrectly()
         {
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var sessionRepository = Substitute.For<ISessionRepository>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
             var session = new Session { Title = "A session", Abstract = "My session is about...", SpeakerUserName = "fred" };
 
             controller.Edit(session);
@@ -80,9 +82,11 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Edit_DoesNotSaveTheUserProfile_WhenTheSubmittedDataIsInvalid()
         {
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var sessionRepository = Substitute.For<ISessionRepository>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
             controller.CreateModelStateError();
 
             controller.Edit(new Session());
@@ -94,10 +98,10 @@ namespace DDDEastAnglia.Tests.Admin
         public void Delete_GetsTheCorrectUserDetails()
         {
             const int sessionId = 123;
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            sessionRepository.Get(sessionId).Returns(new Session { SessionId = sessionId });
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Get(sessionId).Returns(new Session { SessionId = sessionId });
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Delete(sessionId);
 
@@ -108,9 +112,9 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Delete_ReturnsA404_WhenTheUserCannotBeFound()
         {
-            var sessionRepository = Substitute.For<ISessionRepository>();
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             var actionResult = controller.Delete(123);
 
@@ -120,9 +124,11 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void DeleteConfirmed_DeletesTheCorrectUser()
         {
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var sessionRepository = Substitute.For<ISessionRepository>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
             var voteRepository = Substitute.For<IVoteRepository>();
-            var controller = new SessionController(sessionRepository, voteRepository);
+            var controller = new SessionController(sessionRepositoryFactory, voteRepository);
 
             controller.DeleteConfirmed(123);
 

@@ -3,7 +3,12 @@ using DDDEastAnglia.DataAccess.SimpleData;
 
 namespace DDDEastAnglia.DataAccess
 {
-    public sealed class SessionRepositoryFactory
+    public interface ISessionRepositoryFactory
+    {
+        ISessionRepository Create();
+    }
+
+    public sealed class SessionRepositoryFactory : ISessionRepositoryFactory
     {
         private readonly IConferenceLoader conferenceLoader;
         private readonly SessionizeDataLoader sessionizeDataLoader;

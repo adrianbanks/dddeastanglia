@@ -11,9 +11,9 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly IUserProfileRepository userProfileRepository;
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
 
-        public UserController(IUserProfileRepository userProfileRepository, SessionRepositoryFactory sessionRepositoryFactory)
+        public UserController(IUserProfileRepository userProfileRepository, ISessionRepositoryFactory sessionRepositoryFactory)
         {
             if (userProfileRepository == null)
             {

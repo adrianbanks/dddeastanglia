@@ -14,8 +14,8 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         {
             var conference = Substitute.For<IConference>();
             conference.CanPublishAgenda().Returns(false);
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            var factory = new UserProfileFilterFactory(sessionRepository);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            var factory = new UserProfileFilterFactory(sessionRepositoryFactory);
 
             var filter = factory.Create(conference);
             Assert.That(filter, Is.InstanceOf<SubmittedSessionProfileFilter>());
@@ -26,8 +26,8 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         {
             var conference = Substitute.For<IConference>();
             conference.CanPublishAgenda().Returns(true);
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            var factory = new UserProfileFilterFactory(sessionRepository);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            var factory = new UserProfileFilterFactory(sessionRepositoryFactory);
 
             var filter = factory.Create(conference);
             Assert.That(filter, Is.InstanceOf<SelectedSpeakerProfileFilter>());

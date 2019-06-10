@@ -8,10 +8,10 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public sealed class SelectedSessionsLoader : ISessionLoader
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
         private readonly IEnumerable<int> sessionIds;
 
-        public SelectedSessionsLoader(SessionRepositoryFactory sessionRepositoryFactory, IEnumerable<int> selectedSessionIds)
+        public SelectedSessionsLoader(ISessionRepositoryFactory sessionRepositoryFactory, IEnumerable<int> selectedSessionIds)
         {
             if (sessionRepositoryFactory == null)
             {

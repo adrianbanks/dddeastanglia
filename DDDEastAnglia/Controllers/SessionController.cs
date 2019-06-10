@@ -14,10 +14,10 @@ namespace DDDEastAnglia.Controllers
     {
         private readonly IConferenceLoader conferenceLoader;
         private readonly ISpeakerRepository speakerRepository;
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
         private readonly ISessionSorter sessionSorter;
 
-        public SessionController(IConferenceLoader conferenceLoader, ISpeakerRepository speakerRepository, SessionRepositoryFactory sessionRepositoryFactory, ISessionSorter sorter)
+        public SessionController(IConferenceLoader conferenceLoader, ISpeakerRepository speakerRepository, ISessionRepositoryFactory sessionRepositoryFactory, ISessionSorter sorter)
         {
             this.conferenceLoader = conferenceLoader;
             this.speakerRepository = speakerRepository;

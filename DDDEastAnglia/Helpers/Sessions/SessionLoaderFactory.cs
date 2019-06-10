@@ -11,9 +11,9 @@ namespace DDDEastAnglia.Helpers.Sessions
 
     public sealed class SessionLoaderFactory : ISessionLoaderFactory
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
 
-        public SessionLoaderFactory(SessionRepositoryFactory sessionRepositoryFactory)
+        public SessionLoaderFactory(ISessionRepositoryFactory sessionRepositoryFactory)
         {
             if (sessionRepositoryFactory == null)
             {

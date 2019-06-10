@@ -14,15 +14,7 @@ namespace DDDEastAnglia.Tests.Controllers
     public sealed class ResetPasswordControllerTests
     {
         [Test]
-        public void TestThat_Ctor_ThrowsAnException_WhenTheSuppliedContextIsNull()
-        {
-            var resetPasswordThingy = Substitute.For<IResetPasswordThingy>();
-            var resetPasswordEmailSender = Substitute.For<IResetPasswordEmailSender>();
-            Assert.Throws<ArgumentNullException>(() => new ResetPasswordController(null, resetPasswordThingy, resetPasswordEmailSender));
-        }
-
-        [Test]
-        public void TestThat_Ctor_ThrowsAnException_WhenTheSuppliedAccountLoginMethodQuerysNull()
+        public void TestThat_Ctor_ThrowsAnException_WhenTheSuppliedUserProfileRepositoryIsNull()
         {
             var userProfileRepository = Substitute.For<IUserProfileRepository>();
             var resetPasswordEmailSender = Substitute.For<IResetPasswordEmailSender>();
@@ -33,9 +25,8 @@ namespace DDDEastAnglia.Tests.Controllers
         public void TestThat_Ctor_ThrowsAnException_WhenTheSuppliedResetPasswordThingyIsNull()
         {
             var userProfileRepository = Substitute.For<IUserProfileRepository>();
-            var resetPasswordThingy = Substitute.For<IResetPasswordThingy>();
             var resetPasswordEmailSender = Substitute.For<IResetPasswordEmailSender>();
-            Assert.Throws<ArgumentNullException>(() => new ResetPasswordController(userProfileRepository, resetPasswordThingy, resetPasswordEmailSender));
+            Assert.Throws<ArgumentNullException>(() => new ResetPasswordController(userProfileRepository, null, resetPasswordEmailSender));
         }
 
         [Test]

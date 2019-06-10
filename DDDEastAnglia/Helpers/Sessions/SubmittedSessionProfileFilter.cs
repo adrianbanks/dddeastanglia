@@ -8,9 +8,9 @@ namespace DDDEastAnglia.Helpers.Sessions
 {
     public class SubmittedSessionProfileFilter : IUserProfileFilter
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
 
-        public SubmittedSessionProfileFilter(SessionRepositoryFactory sessionRepositoryFactory)
+        public SubmittedSessionProfileFilter(ISessionRepositoryFactory sessionRepositoryFactory)
         {
             if (sessionRepositoryFactory == null)
             {

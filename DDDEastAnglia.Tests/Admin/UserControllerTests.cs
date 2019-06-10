@@ -112,8 +112,8 @@ namespace DDDEastAnglia.Tests.Admin
         private UserController CreateController()
         {
             userProfileRepository = Substitute.For<IUserProfileRepository>();
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            return new UserController(userProfileRepository, sessionRepository);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            return new UserController(userProfileRepository, sessionRepositoryFactory);
         }
     }
 }

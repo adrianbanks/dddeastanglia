@@ -11,9 +11,9 @@ namespace DDDEastAnglia.Helpers.Sessions
 
     public sealed class UserProfileFilterFactory : IUserProfileFilterFactory
     {
-        private readonly SessionRepositoryFactory sessionRepositoryFactory;
+        private readonly ISessionRepositoryFactory sessionRepositoryFactory;
 
-        public UserProfileFilterFactory(SessionRepositoryFactory sessionRepositoryFactory)
+        public UserProfileFilterFactory(ISessionRepositoryFactory sessionRepositoryFactory)
         {
             if (sessionRepositoryFactory == null)
             {

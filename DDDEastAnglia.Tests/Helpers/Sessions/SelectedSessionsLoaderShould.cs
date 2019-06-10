@@ -19,14 +19,14 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         [Test]
         public void ThrowAnException_WhenConstructedWithANullListOfSessions()
         {
-            Assert.Throws<ArgumentNullException>(() => new SelectedSessionsLoader(Substitute.For<ISessionRepository>(), null));
+            Assert.Throws<ArgumentNullException>(() => new SelectedSessionsLoader(Substitute.For<ISessionRepositoryFactory>(), null));
         }
 
         [Test]
         public void ThrowAnException_WhenGivenANullProfile()
         {
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            var sessionsLoader = new SelectedSessionsLoader(sessionRepository, new int[0]);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            var sessionsLoader = new SelectedSessionsLoader(sessionRepositoryFactory, new int[0]);
             Assert.Throws<ArgumentNullException>(() => sessionsLoader.LoadSessions(null));
         }
 
@@ -34,7 +34,9 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         public void OnlyReturnSessionsForTheSpecifiedSpeaker()
         {
             var sessionRepository = Substitute.For<ISessionRepository>();
-            var sessionsLoader = new SelectedSessionsLoader(sessionRepository, new int[0]);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
+            var sessionsLoader = new SelectedSessionsLoader(sessionRepositoryFactory, new int[0]);
 
             sessionsLoader.LoadSessions(new UserProfile {UserName = "bob"});
 
@@ -50,9 +52,11 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
 
             var sessionRepository = Substitute.For<ISessionRepository>();
             sessionRepository.GetSessionsSubmittedBy("bob").Returns(new[] { session1, session3 });
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
 
             var selectedSessionIds = new[] { session1.SessionId, session2.SessionId, session3.SessionId };
-            var sessionsLoader = new SelectedSessionsLoader(sessionRepository, selectedSessionIds);
+            var sessionsLoader = new SelectedSessionsLoader(sessionRepositoryFactory, selectedSessionIds);
 
             var sessions = sessionsLoader.LoadSessions(new UserProfile { UserName = "bob" });
 

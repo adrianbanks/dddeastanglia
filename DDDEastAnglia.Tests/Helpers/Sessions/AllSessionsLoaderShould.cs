@@ -19,8 +19,8 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         [Test]
         public void ThrowAnException_WhenGivenANullProfile()
         {
-            var sessionRepository = Substitute.For<ISessionRepository>();
-            var sessionsLoader = new AllSessionsLoader(sessionRepository);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            var sessionsLoader = new AllSessionsLoader(sessionRepositoryFactory);
             Assert.Throws<ArgumentNullException>(() => sessionsLoader.LoadSessions(null));
         }
 
@@ -28,7 +28,9 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         public void OnlyReturnSessionsForTheSpecifiedSpeaker()
         {
             var sessionRepository = Substitute.For<ISessionRepository>();
-            var sessionsLoader = new AllSessionsLoader(sessionRepository);
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
+            var sessionsLoader = new AllSessionsLoader(sessionRepositoryFactory);
 
             sessionsLoader.LoadSessions(new UserProfile {UserName = "bob"});
 

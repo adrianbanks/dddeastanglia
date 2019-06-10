@@ -19,8 +19,10 @@ namespace DDDEastAnglia.Tests.Helpers.Sessions
         [Test]
         public void FilterOutUsersWhoHaveNotSubmittedSessions()
         {
+            var sessionRepositoryFactory = Substitute.For<ISessionRepositoryFactory>();
             var sessionRepository = Substitute.For<ISessionRepository>();
-            var profileFilter = new SubmittedSessionProfileFilter(sessionRepository);
+            sessionRepositoryFactory.Create().Returns(sessionRepository);
+            var profileFilter = new SubmittedSessionProfileFilter(sessionRepositoryFactory);
 
             var profile1 = new UserProfile {UserName = "fred"};
             var profile2 = new UserProfile {UserName = "george"};
