@@ -24,9 +24,9 @@
             &nbsp;
         </th></tr>
     </thead>
-    
+
     <tbody>
-    @foreach (var item in Model) 
+    @foreach (var item in Model)
     {
         <tr><td>
             <img src="@item.GravatarUrl" width="32" height="32" alt="@item.Name" title="@item.Name">
@@ -34,11 +34,11 @@
         </td><td>
             @Html.DisplayFor(modelItem => item.Name)
         </td><td class="controls">
-            <span><i class="icon-list-alt"></i> @Html.ActionLink("Details", "Details", "User", new { id = item.UserId }, new { area = "Admin" })</span>
+            <span><i class="icon-list-alt"></i> @Html.ActionLink("Details", "Details", "User", new { id = item.Id }, new { area = "Admin" })</span>
             |
-            <span><i class="icon-edit"></i> @Html.ActionLink("Edit", "Edit", "User", new { id = item.UserId }, new { area = "Admin" })</span>
+            <span><i class="icon-edit"></i> @Html.ActionLink("Edit", "Edit", "User", new { id = item.Id }, new { area = "Admin" })</span>
             |
-            <span><i class="icon-trash"></i> @Html.ActionLink("Delete", "Delete", "User", new { id = item.UserId }, new { area = "Admin" })</span>
+            <span><i class="icon-trash"></i> @Html.ActionLink("Delete", "Delete", "User", new { id = item.Id }, new { area = "Admin" })</span>
         </td></tr>
     }
     </tbody>

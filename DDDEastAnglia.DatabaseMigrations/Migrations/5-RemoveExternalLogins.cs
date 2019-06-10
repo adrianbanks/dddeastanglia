@@ -2,7 +2,7 @@ using FluentMigrator;
 
 namespace DDDEastAnglia.DatabaseMigrations.Migrations
 {
-    [Migration(20190610)]
+    [Migration(20190609)]
     public class RemoveExternalLogins : Migration
     {
         public override void Up()

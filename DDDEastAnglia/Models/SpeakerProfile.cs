@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using DDDEastAnglia.Helpers;
 
 namespace DDDEastAnglia.Models
@@ -6,14 +7,14 @@ namespace DDDEastAnglia.Models
     public class SpeakerProfile
     {
         [Key]
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public string UserName { get; set; }
 
         public string Name { get; set; }
-        
+
         public string EmailAddress { get; set; }
-        
+
         public bool NewSpeaker { get; set; }
 
         public int NumberOfSubmittedSessions { get; set; }

@@ -214,7 +214,7 @@ namespace DDDEastAnglia.Controllers
                     {
                         new SessionSpeakerModel
                         {
-                            SpeakerId = profile.UserId,
+                            SpeakerId = profile.Id,
                             SpeakerName = profile.Name,
                             SpeakerUserName = session.SpeakerUserName,
                             SpeakerGravatarUrl = profile.GravatarUrl(),

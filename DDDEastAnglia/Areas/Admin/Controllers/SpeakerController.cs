@@ -29,7 +29,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
                                                 .OrderBy(s => s.UserName).ToList();
             return View(speakers);
         }
-    
+
         private static SpeakerModel CreateSpeakerModel(SpeakerProfile profile)
         {
             return new SpeakerModel

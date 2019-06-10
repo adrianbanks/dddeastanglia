@@ -49,7 +49,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
             return View(users);
         }
 
-        public ActionResult Details(int id)
+        public ActionResult Details(Guid id)
         {
             var userProfile = userProfileRepository.GetUserProfileById(id);
 
@@ -61,7 +61,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
             return View(userProfile);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(Guid id)
         {
             var userProfile = userProfileRepository.GetUserProfileById(id);
             return userProfile == null ? (ActionResult) HttpNotFound() : View(userProfile);
@@ -80,7 +80,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
             return View(userProfile);
         }
 
-        public ActionResult Delete(int id)
+        public ActionResult Delete(Guid id)
         {
             var userProfile = userProfileRepository.GetUserProfileById(id);
             return userProfile == null ? (ActionResult) HttpNotFound() : View(userProfile);
@@ -88,7 +88,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
             userProfileRepository.DeleteUserProfile(id);
             return RedirectToAction("Index");
@@ -98,6 +98,7 @@ namespace DDDEastAnglia.Areas.Admin.Controllers
         {
             return new UserModel
                 {
+                    Id = profile.Id,
                     UserId = profile.UserId,
                     UserName = profile.UserName,
                     Name = profile.Name,

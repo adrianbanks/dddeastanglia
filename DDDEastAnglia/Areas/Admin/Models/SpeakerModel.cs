@@ -1,10 +1,11 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace DDDEastAnglia.Areas.Admin.Models
 {
     public class SpeakerModel
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
 
         [DisplayName("username")]
         public string UserName { get; set; }

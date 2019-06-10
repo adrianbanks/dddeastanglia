@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DDDEastAnglia.Models;
 
 namespace DDDEastAnglia.DataAccess
@@ -6,11 +7,11 @@ namespace DDDEastAnglia.DataAccess
     public interface IUserProfileRepository
     {
         IEnumerable<UserProfile> GetAllUserProfiles();
-        UserProfile GetUserProfileById(int id);
+        UserProfile GetUserProfileById(Guid id);
         UserProfile GetUserProfileByUserName(string userName);
         UserProfile GetUserProfileByEmailAddress(string emailAddress);
         UserProfile AddUserProfile(UserProfile userProfile);
         void UpdateUserProfile(UserProfile profile);
-        void DeleteUserProfile(int id);
+        void DeleteUserProfile(Guid id);
     }
 }

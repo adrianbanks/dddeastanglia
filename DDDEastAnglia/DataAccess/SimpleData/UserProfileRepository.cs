@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DDDEastAnglia.Models;
 using Simple.Data;
 
@@ -13,9 +14,9 @@ namespace DDDEastAnglia.DataAccess.SimpleData
             return db.UserProfiles.All();
         }
 
-        public UserProfile GetUserProfileById(int id)
+        public UserProfile GetUserProfileById(Guid id)
         {
-            return db.UserProfiles.FindByUserId(id);
+            return db.UserProfiles.FindById(id);
         }
 
         public UserProfile GetUserProfileByUserName(string userName)
@@ -38,9 +39,9 @@ namespace DDDEastAnglia.DataAccess.SimpleData
             db.UserProfiles.UpdateByUserId(profile);
         }
 
-        public void DeleteUserProfile(int id)
+        public void DeleteUserProfile(Guid id)
         {
-            db.UserProfiles.DeleteByUserId(id);
+            db.UserProfiles.DeleteById(id);
         }
     }
 }

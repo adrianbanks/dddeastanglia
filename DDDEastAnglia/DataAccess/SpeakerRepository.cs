@@ -55,7 +55,7 @@ namespace DDDEastAnglia.DataAccess
         {
             return new SpeakerProfile
             {
-                UserId = userProfile.UserId,
+                UserId = userProfile.Id,
                 UserName = userProfile.UserName,
                 Name = userProfile.Name,
                 EmailAddress = userProfile.EmailAddress,

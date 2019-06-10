@@ -75,7 +75,7 @@ namespace DDDEastAnglia.Controllers
             return View(speakers);
         }
 
-        public ActionResult Details(int id = 0)
+        public ActionResult Details(Guid id)
         {
             var conference = conferenceLoader.LoadConference();
 

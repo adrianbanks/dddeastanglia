@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DDDEastAnglia.Models
 {
@@ -17,7 +18,7 @@ namespace DDDEastAnglia.Models
 
     public class SessionSpeakerModel
     {
-        public int SpeakerId { get; set; }
+        public Guid SpeakerId { get; set; }
         public string SpeakerName { get; set; }
         public string SpeakerUserName { get; set; }
         public string SpeakerGravatarUrl { get; set; }
