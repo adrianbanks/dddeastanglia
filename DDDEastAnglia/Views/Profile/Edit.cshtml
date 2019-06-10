@@ -17,6 +17,7 @@
     <p>Please provide as much information as possible.</p>
 
     @Html.ValidationSummary(true)
+    @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.UserId)
     @Html.HiddenFor(m => m.UserName)
 

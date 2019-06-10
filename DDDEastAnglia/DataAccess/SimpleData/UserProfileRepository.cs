@@ -36,7 +36,7 @@ namespace DDDEastAnglia.DataAccess.SimpleData
 
         public void UpdateUserProfile(UserProfile profile)
         {
-            db.UserProfiles.UpdateByUserId(profile);
+            db.UserProfiles.UpdateById(profile);
         }
 
         public void DeleteUserProfile(Guid id)

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using DDDEastAnglia.Areas.Admin.Controllers;
 using DDDEastAnglia.DataAccess;
 using DDDEastAnglia.Models;
@@ -15,7 +16,7 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Details_GetsTheCorrectUserDetails()
         {
-            const int userId = 123;
+            var userId = new Guid("e9d651a8-d638-4aba-b584-b9b5772d3b2f");
             var controller = CreateController();
 
             controller.Details(userId);
@@ -28,7 +29,7 @@ namespace DDDEastAnglia.Tests.Admin
         {
             var controller = CreateController();
 
-            var actionResult = controller.Details(123);
+            var actionResult = controller.Details(Guid.NewGuid());
 
             Assert.That(actionResult.GetHttpStatusCode(), Is.EqualTo(HttpStatusCode.NotFound));
         }
@@ -36,7 +37,7 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Edit_GetsTheCorrectUserDetails()
         {
-            const int userId = 123;
+            var userId = new Guid("e9d651a8-d638-4aba-b584-b9b5772d3b2f");
             var controller = CreateController();
 
             controller.Edit(userId);
@@ -49,7 +50,7 @@ namespace DDDEastAnglia.Tests.Admin
         {
             var controller = CreateController();
 
-            var actionResult = controller.Edit(123);
+            var actionResult = controller.Edit(Guid.NewGuid());
 
             Assert.That(actionResult.GetHttpStatusCode(), Is.EqualTo(HttpStatusCode.NotFound));
         }
@@ -79,7 +80,7 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void Delete_GetsTheCorrectUserDetails()
         {
-            const int userId = 123;
+            var userId = new Guid("e9d651a8-d638-4aba-b584-b9b5772d3b2f");
             var controller = CreateController();
 
             controller.Delete(userId);
@@ -92,7 +93,7 @@ namespace DDDEastAnglia.Tests.Admin
         {
             var controller = CreateController();
 
-            var actionResult = controller.Delete(123);
+            var actionResult = controller.Delete(Guid.NewGuid());
 
             Assert.That(actionResult.GetHttpStatusCode(), Is.EqualTo(HttpStatusCode.NotFound));
         }
@@ -100,11 +101,12 @@ namespace DDDEastAnglia.Tests.Admin
         [Test]
         public void DeleteConfirmed_DeletesTheCorrectUser()
         {
+            var userId = new Guid("e9d651a8-d638-4aba-b584-b9b5772d3b2f");
             var controller = CreateController();
 
-            controller.DeleteConfirmed(123);
+            controller.DeleteConfirmed(userId);
 
-            userProfileRepository.Received().DeleteUserProfile(123);
+            userProfileRepository.Received().DeleteUserProfile(userId);
         }
 
         private UserController CreateController()

@@ -16,7 +16,7 @@
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true)
 
-    @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.Id)
 
     <div class="control-group">
         @Html.LabelFor(m => Model.Name, new { @class = "control-label" })
