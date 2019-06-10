@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Net;
 using Newtonsoft.Json;
 
@@ -19,6 +20,7 @@ namespace DDDEastAnglia.DataAccess.Sessionize
             public Session[] Sessions { get; set; }
         }
 
+        [DebuggerDisplay("{Title}")]
         public class Session
         {
             public int Id { get; set; }
@@ -27,6 +29,7 @@ namespace DDDEastAnglia.DataAccess.Sessionize
             public Guid[] Speakers { get; set; }
         }
 
+        [DebuggerDisplay("{FullName}")]
         public class Speaker
         {
             public Guid Id { get; set; }
@@ -38,6 +41,7 @@ namespace DDDEastAnglia.DataAccess.Sessionize
             public int[] Sessions { get; set; }
         }
 
+        [DebuggerDisplay("{Title} - {Url}")]
         public class Link
         {
             public string Title { get; set; }

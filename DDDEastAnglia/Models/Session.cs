@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace DDDEastAnglia.Models
 {
+    [DebuggerDisplay("{Title}")]
     public class Session
     {
         [Key]
@@ -11,7 +13,7 @@ namespace DDDEastAnglia.Models
         [Required]
         [Display(Name = "title")]
         public string Title { get; set; }
-        
+
         [Required]
         [Display(Name = "abstract")]
         public string Abstract { get; set; }

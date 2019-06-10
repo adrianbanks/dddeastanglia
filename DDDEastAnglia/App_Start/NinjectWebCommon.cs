@@ -37,6 +37,7 @@ namespace DDDEastAnglia.App_Start
             kernel.Bind<IDateTimeOffsetProvider>().To<LocalDateTimeOffsetProvider>();
             kernel.Bind<IDataProvider>().To<DataProvider>();
             kernel.Bind<ISessionLoader>().ToMethod(CreateSessionLoader);
+            kernel.Bind<ISessionRepositoryFactory>().To<SessionRepositoryFactory>();
 
             RegisterServices(kernel);
             return kernel;
@@ -52,7 +53,7 @@ namespace DDDEastAnglia.App_Start
             var conferenceLoader = context.Kernel.Get<IConferenceLoader>();
             var conference = conferenceLoader.LoadConference();
 
-            var sessionRepositoryFactory = context.Kernel.Get<SessionRepositoryFactory>();
+            var sessionRepositoryFactory = context.Kernel.Get<ISessionRepositoryFactory>();
 
             var factory = new SessionLoaderFactory(sessionRepositoryFactory);
             return factory.Create(conference);
